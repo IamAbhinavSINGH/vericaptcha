@@ -28,6 +28,7 @@ export const Auth = ({ type } : {type : "signup" | "signin"}) => {
                 navigate("/");
                 localStorage.setItem("username", inputFields.username);
                 localStorage.setItem("password", inputFields.password);
+                storeToken();
             }
         } catch (err: any) {
             if (err.response && err.response.data) {
@@ -38,6 +39,34 @@ export const Auth = ({ type } : {type : "signup" | "signin"}) => {
             console.error("Error while " + type + " : ", err);
         }
     };
+
+
+    const storeToken = async () => {
+        try {
+            const usernameLocalStorage = localStorage.getItem("username");
+            const passwordLocalStorage = localStorage.getItem("password");
+
+            const params = new URLSearchParams();
+            params.append('username', usernameLocalStorage || '');
+            params.append('password', passwordLocalStorage || '');
+    
+            const response = await axios.post(
+                `https://backend.vericaptcha.live/token`,
+                params, 
+                {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded' 
+                    }
+                }
+            );
+    
+            localStorage.setItem("token", response.data.access_token);
+        } catch (err) {
+            console.log(err);
+            navigate("/signin");
+        }
+    };
+
 
 
     return <div className="h-screen flex justify-center flex-col bg-stone-900">

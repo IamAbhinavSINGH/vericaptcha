@@ -1,7 +1,7 @@
 import icon from "../../public/folder-icon.svg"
 import { Link, useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface AppBarPropsType {
     type: "Home" | "Order" | "Captcha" | "Marketplace" ;
@@ -11,17 +11,27 @@ export const AppBar = ({type} : AppBarPropsType) =>{
 
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [username , setUserName] = useState<string>("");
 
     
     const logOut = () =>{
         navigate("/signin");
     }
 
+    const checkLogin = () => {
+        const storedName = localStorage.getItem("username");
+        if(storedName != null){
+            setUserName(storedName);
+        }
+    }
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    useEffect(()=>{
+        checkLogin();
+    },[])
 
     return(
         <div>
@@ -39,7 +49,7 @@ export const AppBar = ({type} : AppBarPropsType) =>{
                     </div>
                 </div>
                 <div className="flex items-center">
-                    <Avatar onClick={logOut} name="Abhinav Singh" />
+                    <Avatar onClick={logOut} name={username} />
                     <button
                         className="md:hidden text-stone-100 focus:outline-none pr-4"
                         onClick={toggleMenu}
