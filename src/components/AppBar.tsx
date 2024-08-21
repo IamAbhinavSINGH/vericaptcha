@@ -72,7 +72,6 @@ function RenderButtons({type} : AppBarPropsType){
     const buttons = [
         { name : "Home", linkTo : "" },
         { name : "Captcha" , linkTo : "captcha"},
-        { name : "MarketPlace" , linkTo : "marketplace"},
         { name : "Order" , linkTo : "order"}
     ]
 

@@ -23,7 +23,7 @@ export const Auth = ({ type } : {type : "signup" | "signin"}) => {
                 inputFields
             );
 
-            if (responseObj.data) {
+            if (responseObj.data || (type === 'signup' && responseObj.data === null)) {
                 setResponse("Successfully signed in");
                 navigate("/");
                 localStorage.setItem("username", inputFields.username);
