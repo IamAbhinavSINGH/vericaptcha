@@ -2,7 +2,6 @@ import icon from "../../public/folder-icon.svg"
 import { Link, useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useEffect, useState } from "react";
-import { BiLogOut } from "react-icons/bi";
 
 interface AppBarPropsType {
     type: "Home" | "Order" | "Captcha" | "Marketplace" ;
