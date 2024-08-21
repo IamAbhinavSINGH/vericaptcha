@@ -119,9 +119,7 @@ export const CaptchaHolder = () => {
                     await fetchCaptcha();
                 }, 3000);
             }
-        } else if (result === null || result?.length === 0) {
-            setResponseData("Wait, you haven't selected anything yet!");
-        } else if (captchaImage === null) {
+        }  else if (captchaImage === null) {
             setResponseData("Sorry, couldn't load captcha for you ) :");
         }
     }

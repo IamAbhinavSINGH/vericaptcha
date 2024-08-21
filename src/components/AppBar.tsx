@@ -2,6 +2,7 @@ import icon from "../../public/folder-icon.svg"
 import { Link, useNavigate } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useEffect, useState } from "react";
+import { BiLogOut } from "react-icons/bi";
 
 interface AppBarPropsType {
     type: "Home" | "Order" | "Captcha" | "Marketplace" ;
@@ -12,17 +13,25 @@ export const AppBar = ({type} : AppBarPropsType) =>{
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [username , setUserName] = useState<string>("");
-
+    const [isLoggedIn , setLogInStatus] = useState<boolean>(true);
     
     const logOut = () =>{
-        navigate("/signin");
+
+        if(isLoggedIn == false){
+            navigate("/signup");
+        }
+
+        localStorage.removeItem("username");
+        localStorage.removeItem("password");
+        setLogInStatus(!isLoggedIn);
     }
 
     const checkLogin = () => {
         const storedName = localStorage.getItem("username");
         if(storedName != null){
             setUserName(storedName);
-        }
+            setLogInStatus(true);
+        }else setLogInStatus(false);
     }
 
     const toggleMenu = () => {
@@ -49,7 +58,10 @@ export const AppBar = ({type} : AppBarPropsType) =>{
                     </div>
                 </div>
                 <div className="flex items-center">
-                    <Avatar onClick={logOut} name={username} />
+                    <LogButton logOut={logOut} isLoggedIn={isLoggedIn}>
+
+                    </LogButton>
+                    <Avatar onClick={()=>{}} name={username} />
                     <button
                         className="md:hidden text-stone-100 focus:outline-none pr-4"
                         onClick={toggleMenu}
@@ -83,6 +95,16 @@ function RenderButtons({type} : AppBarPropsType){
             ) : null
         )}
     </div>
+    );
+}
+
+function LogButton({logOut , isLoggedIn} : {logOut : () => void , isLoggedIn : Boolean}){
+    return (
+        <button onClick={logOut} className="text-md text-red-500 font-semibold mr-4">
+            {
+                isLoggedIn ? "Log out" : "Log in"
+            }
+        </button>
     );
 }
 
